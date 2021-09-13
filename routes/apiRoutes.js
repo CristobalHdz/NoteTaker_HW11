@@ -1,29 +1,14 @@
 const fs = require("fs");
-const path = require('path')
+const path = require('path');
+const { isDataView } = require("util/types");
 
 module.exports = function (app) {
 
     app.get("/api/notes", function (req, res) {
-        
-        fs.readFile("./db/db.json", "utf-8", function (err, data) {
+        fs.readFile(path.join(__dirname, "../db/db.json"), (err, data) => {
             if (err) throw err;
-            const files = JSON.parse(data);
-            res.json(files)
-        });
-
-        app.get("/", function (req, res) {
-            res.sendFile(path.join(__dirname, "./public/index.html"));
-        });
-
-        app.get("/notes", function (req, res) {
-            res.sendFile(path.join(__dirname, "./public/notes.html"));
-        });
-
-
-    });
-
-    app.get("*", function (req, res) {
-        res.sendFile(path.join(__dirname, "./public/index.html"));
+            res.json(JSON.parse(data))
+        })
     });
 
 
